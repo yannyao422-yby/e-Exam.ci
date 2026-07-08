@@ -1,9 +1,10 @@
+// On importe les outils de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
-// Remplacez ces valeurs par vos vraies clés Firebase
+// Votre configuration (votre "e-Exam-ci" Firebase)
 const firebaseConfig = {
-  apiKey: "VOTRE_API_KEY",
+  apiKey: "e-exam-ci",
   authDomain: "e-exam-ci.firebaseapp.com",
   projectId: "e-exam-ci",
   storageBucket: "e-exam-ci.appspot.com",
@@ -11,20 +12,19 @@ const firebaseConfig = {
   appId: "VOTRE_APP_ID"
 };
 
+// Initialisation
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// On va chercher la question
 async function chargerQuestion() {
-    try {
-        const querySnapshot = await getDocs(collection(db, "Questions"));
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            // Cela va injecter le texte de Firebase dans votre balise H1
-            document.getElementById("question").innerText = data.énoncé;
-        });
-    } catch (e) {
-        console.error("Erreur de connexion : ", e);
-    }
+    const querySnapshot = await getDocs(collection(db, "Questions"));
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        // On remplace le texte "Chargement..." par votre question
+        document.getElementById("question").innerText = data.énoncé;
+    });
 }
 
+// On lance la fonction
 chargerQuestion();
